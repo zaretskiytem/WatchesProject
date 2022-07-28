@@ -59,7 +59,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar() {
-  const { searchWord, setSearchWord, getWatches } = React.useContext(ClientContext)
+  const { searchWord, setSearchWord, getWatches } =
+    React.useContext(ClientContext);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -197,10 +199,9 @@ export default function Navbar() {
             <StyledInputBase
               value={searchWord}
               onChange={(e) => {
-                setSearchWord(e.target.value)
-                
+                setSearchWord(e.target.value);
               }}
-              placeholder="Search…"
+              placeholder="Поиск..."
               inputProps={{ "aria-label": "search" }}
             />
           </Search>

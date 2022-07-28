@@ -1,73 +1,90 @@
 import React from "react";
-import { 
+import {
   Container,
   Card,
-  CardActions,CardContent,
+  CardActions,
+  CardContent,
   CardMedia,
   Button,
   Typography,
-  Slider, 
+  Slider,
+  Pagination,
 } from "@mui/material";
-import { ClientContext } from "../contexts/ClientProvider"
-
+import { ClientContext } from "../contexts/ClientProvider";
 
 function MainPage() {
-  const { getWatches, watches, filterByPrice, setFilterByPrice } = React.useContext(ClientContext);
-  
+  const { 
+    getWatches, 
+    watches, 
+    filterByPrice, 
+    setFilterByPrice, 
+    pagesCount, 
+    setCurrentPage, 
+    currentPage, 
+    addWatchToBasket 
+  } = React.useContext(ClientContext);
+
   React.useEffect(() => {
     getWatches();
-  }, [filterByPrice]);
+  }, [filterByPrice, currentPage]);
 
   return (
     <div className="main-page">
       <Container>
         <h2>Весь каталог часов</h2>
         <div className="filter-block">
-          <h4>Price Filter</h4>
+          <h4>Фильтрация по цене:</h4>
           <Slider
-          max={999999}
-          min={0}
-          valueLabelDisplay="auto"
-          value={filterByPrice}
-          onChange={(_, newValue) => setFilterByPrice(newValue)} />
+            max={999999}
+            min={0}
+            valueLabelDisplay="auto"
+            value={filterByPrice}
+            onChange={(_, newValue) => setFilterByPrice(newValue)}
+          />
         </div>
         <div className="products">
           {watches.map((item) => (
             <Card key={item.id} className="product-card">
-              <CardMedia
-                component="img"
-                height="140"
-                image={item.photo}
-              />
+              <CardMedia component="img" height="140" image={item.photo} />
               <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+                <Typography
+                  className="product-card-title"
+                  gutterBottom
+                  variant="h5"
+                  component="div"
+                >
                   {item.name}
                 </Typography>
                 <ul className="product-card-ul">
                   <li>
-                    <span>Brand</span>
+                    <span>Бренд:</span>
                     <span>{item.brand}</span>
                   </li>
                   <li>
-                    <span>Production Year</span>
+                    <span>Дата выпуска:</span>
                     <span>{item.year}</span>
                   </li>
                   <li>
-                    <span>Production Country</span>
+                    <span>Страна производства:</span>
                     <span>{item.country}</span>
                   </li>
                   <li>
-                    <span>Price:</span>
-                    <span>{item.price}</span>
-                  
+                    <span>Цена:</span>
+                    <span>{item.price}сом</span>
                   </li>
                 </ul>
+                <Button onClick={() => addWatchToBasket(item)}variant="outlined">Add to cart</Button>
               </CardContent>
             </Card>
           ))}
         </div>
+        <div className="pagination-block">
+
+          <Pagination onChange={(_, newValue) => setCurrentPage(newValue)} count={pagesCount} variant="outlined" shape="rounded" />
+        </div>
       </Container>
     </div>
+    
   );
 }
 
